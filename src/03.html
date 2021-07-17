@@ -3,27 +3,34 @@
 
 <body>
   <div id="root"></div>
+
+  <!-- React and React DOM JS files -->
   <script src="https://unpkg.com/react@17.0.0/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.0/umd/react-dom.development.js"></script>
 
-  <!-- 💣 remove this line
+  <!-- Babel JS file -->
   <script src="https://unpkg.com/@babel/standalone@7.12.4/babel.js"></script>
-  💣 remove this line -->
 
-  <script type="module">
-    // 🐨 on the script tag above, change `type="module"`
-    // to `type="text/babel"` so babel will compile this code for the browser to run.
+  <script type="text/babel">
+    // change the script tag type from `type="module"` to `type="text/babel"` 
+    // js engine will not run this script, but babel will compile this code and 
+    // create a new script tag in the head with the compiled version of the code. 
+    // js engine will then evaluate this new script tag   
 
-    // 🐨 re-implement this using JSX!
-    const element = React.createElement('div', {
-      className: 'container',
-      children: 'Hello World',
-    })
+    // re-implement this using JSX!
+    // const element = React.createElement('div', {
+    //   className: 'container',
+    //   children: 'Hello World',
+    // })
+    const className = "container"
+    const subject = "Hello Sean"
+    // interpolating/embedding JS expression into JSX
+    const element = <div className={className}>{subject}</div>;
 
-    // 💰 there are a few subtle differences between JSX and HTML. One such
-    // difference is how you apply a class to an element in JSX is by using
-    // `className` rather than `class`!
-    // 📜 You can learn the differences between JSX and HTML syntax from the React docs here:
+    // JSX vs HTML syntax
+    // One such difference is how you apply a class to an element in JSX is by 
+    // using `className` rather than `class`
+    // You can learn more from the React docs here:
     // https://reactjs.org/docs/dom-elements.html#differences-in-attributes
 
     ReactDOM.render(element, document.getElementById('root'))
