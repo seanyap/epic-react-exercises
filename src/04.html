@@ -11,7 +11,7 @@
 
     // CREATING React components = writing functions that takes in an input object 
     // and returns a CUSTOM React element(object) BASED on the properties we passed in
-    function message(props) {
+    function Message(props) {
       return <div className={props.className}>{props.children}</div>
     }
 
@@ -21,8 +21,8 @@
     //   3. using JSX syntax which will be compiled into the createElement API
     const element = (
       <div className="container">
-        {React.createElement(message, { children: 'Hello World' })}
-        {React.createElement(message, { children: 'Goodbye World' })}
+        <Message>Hello Sean</Message>
+        <Message>Goodbye Sean</Message>
       </div>
     )
 
