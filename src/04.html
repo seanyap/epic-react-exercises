@@ -11,8 +11,9 @@
 
     // CREATING React components = writing functions that takes in an input object 
     // and returns a CUSTOM React element(object) BASED on the properties we passed in
-    function Message(props) {
-      return <div className={props.className}>{props.children}</div>
+    function Message({ className, children }) {
+      // destructure input object 
+      return <div className={className}>{children}</div>
     }
 
     // USING React components are simply calling functions with an object called props:
@@ -22,8 +23,8 @@
     // React will treat everything that is in between JSX tags "children" of the element
     const element = (
       <div className="container">
-        <Message>Hello Sean</Message>
-        <Message>Goodbye Sean</Message>
+        <Message className="container">Hello Sean</Message>
+        <Message className="container">Goodbye Sean</Message>
       </div>
     )
 
