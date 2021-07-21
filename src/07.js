@@ -22,11 +22,16 @@ function App() {
     setItems(items.filter((i) => i.id !== item.id));
   }
 
+  // if you have a component that maintains state that changes over time,
+  // you need to provide a "key prop" so react can keep track of the changes
+  // and re-render it properly
+  // in this case we need to provide a key prop to our individual <li></li>
+
   // if you look at the code below, you need to figure out the structure like
   // the divs, buttons, lists, and try to picture it in your head
   // wouldn't it be better if we had a component that wrap all the code below
   // so when we use it, we will see <ItemList></ItemList> and we can immediately
-  // tell what the UI is and form a picture in my head faster
+  // tell what the UI is and form a mental picture faster
   // this is the benefit of declarative code like react as opposed to imperative
   return (
     <div className="keys">
