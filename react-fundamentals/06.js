@@ -11,7 +11,7 @@ function UsernameForm({ onSubmitUsername }) {
     onSubmitUsername(event.target.elements.usernameInput.value);
   }
 
-  // 2 ways to get the value from the username input from the form element
+  // 2 ways to ACCESS the value provided in input field inside of the form element
   //   1. event.target.elements[0].value
   //   2. event.target.elements.<id or name>.value (better because we don't have to rely on the order of the inputs)
 
