@@ -4,7 +4,7 @@
 <body>
   <div id="root"></div>
 
-  <!-- 🐨 add React and ReactDOM on the page. -->
+  <!-- add React and ReactDOM on the page. -->
   <script src="https://unpkg.com/react@17.0.0/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.0/umd/react-dom.development.js"></script>
 
@@ -16,18 +16,18 @@
 
     // These three lines are similar to React.createElement
     // const element = document.createElement('div')
-    // element.textContent = 'Hello World' // 💰 in React, you set this with the "children" prop
-    // element.className = 'container' // 💰 in React, this is also called the "className" prop
+    // element.textContent = 'Hello World' -> in React, you set this with the "children" prop
+    // element.className = 'container' -> in React, this is also called the "className" prop
 
-    // create React element using the createElement API from React module, rather than creating DOM node using DOM api
+    // create React element using the createElement API from React module, rather than creating DOM node using DOM api; you'll need to then add it to ReactDOM
     const reactSpan1 = React.createElement('span', { children: 'Hello' })
     const reactSpan2 = React.createElement('span', { children: 'Sean' })
 
-    // create a react element and sets the type to 'div' and add a prop (key-value pair) to the react object element, add more arguments as children to this element
+    // create a react element, setting the type to 'div' and add a prop (key-value pair) to the react element, add more arguments as children to this element
+    // this will return a JS object, which you can console.log to check out
     const reactDivElement = React.createElement('div', { className: 'container' }, reactSpan1, reactSpan2)
 
-    // This is similar to ReactDOM.render
-    // rootElement.append(element)
+    // ReactDOM.render() is similar to DOM's API: rootElement.append(element)
 
     // ReactDOM render API takes the React elements we created and create new DOM 
     // nodes and update the DOM structure 

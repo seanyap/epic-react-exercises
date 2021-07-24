@@ -1,23 +1,14 @@
 <!-- Basic JavaScript-rendered Hello World -->
 <!-- http://localhost:3000/isolated/exercise/01.html -->
 
-<!-- 🐨 Create (in HTML) a <body> with a <div> with the id of "root" -->
+<!-- Then create a <script type="module"> for your JavaScript -->
+<!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attributes -->
+<!-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules -->
+<!-- https://github.com/mdn/js-examples/tree/master/modules -->
 
-<!-- 🐨 Then create a <script type="module"> for your JavaScript -->
-<!--   📜 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attributes -->
-<!--   📜 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules -->
-<!--   📜 https://github.com/mdn/js-examples/tree/master/modules -->
-
-<!-- These next instructions are to be written in JavaScript in the <script> tag -->
-<!-- 🐨 Create a div -->
-<!--   💰 document.createElement('div') -->
-
-<!-- 🐨 Set the div's textContent to 'Hello World' and className to 'container' -->
-<!--   💰 div.textContent = '...' -->
-
-<!-- 🐨 Append the div to the root div using `append` -->
-<!--   💰 document.getElementById('root') -->
-<!--   📜 https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append -->
+<!-- Append the div to the root div using `append` -->
+<!--   document.getElementById('root') -->
+<!--   https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append -->
 
 <body>
     <!-- this DOM node is created by the browser when it loads this html; we can then "referenced" to this node in our script -->
@@ -31,6 +22,7 @@
         // make sure that we link this to the DOM node created by the browser, if not this node will only exist in memory and not show to user
         element.textContent = 'Hello Sean'
         element.className = 'container'
+
         rootElement.append(element)
     </script>
 </body>
