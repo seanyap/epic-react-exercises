@@ -8,13 +8,26 @@ import * as React from "react";
 
 function Board() {
   // managed state within this component that change over time
-  const [squares, setSquares] = React.useState(Array(9).fill(null));
+  // add lazy initialization to avoid parsing and getting item from localStorage
+  // on every update / re-render of our state
+  const [squares, setSquares] = React.useState(
+    () =>
+      JSON.parse(window.localStorage.getItem("squares")) || Array(9).fill(null)
+  );
 
   // derived values based on squares state and derived states(winne and nextValue)
   // we're not using useState() bc these are derived states
   const winner = calculateWinner(squares);
   const nextValue = calculateNextValue(squares);
   const status = calculateStatus(winner, squares, nextValue);
+
+  // this side effect code saves our game data so if page is refreshed etc users can resume game
+  // make sure to serialize the array "squares" to allow storing data in disk
+  // this side effect code will run only when there's a change in the array "squares"
+  React.useEffect(() => {
+    console.log("running side effects");
+    window.localStorage.setItem("squares", JSON.stringify(squares));
+  }, [squares]);
 
   // This is the function your square click handler will call. square = index value
   function selectSquare(square) {
