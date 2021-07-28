@@ -1,6 +1,7 @@
 // useState: tic tac toe
 
 import * as React from "react";
+import { useLocalStorageState } from "../utils";
 
 // steps
 // 1. the state is managed and the ui is rendered properly
@@ -10,12 +11,17 @@ function Board() {
   // managed state within this component that change over time
   // add lazy initialization to avoid parsing and getting item from localStorage
   // on every update / re-render of our state
-  const [squares, setSquares] = React.useState(
-    () =>
-      JSON.parse(window.localStorage.getItem("squares")) || Array(9).fill(null)
+  const [squares, setSquares] = useLocalStorageState(
+    "squares",
+    Array(9).fill(null)
   );
+  const [squaresHistory, setSquaresHistory] = useLocalStorageState(
+    "squaresHistory",
+    [Array(9).fill(null)]
+  );
+  const [currentMove, setCurrentMove] = useLocalStorageState("currentMove", 0);
 
-  // derived values based on squares state and derived states(winne and nextValue)
+  // derived values based on squares state and derived states(winner and nextValue)
   // we're not using useState() bc these are derived states
   const winner = calculateWinner(squares);
   const nextValue = calculateNextValue(squares);
@@ -39,6 +45,19 @@ function Board() {
     const squaresCopy = [...squares];
     squaresCopy[square] = nextValue;
     setSquares(squaresCopy);
+
+    let squaresHistoryCopy = [];
+    if (currentMove !== squaresHistory.length) {
+      for (let i = 0; i <= currentMove; i++) {
+        squaresHistoryCopy.push(squaresHistory[i]);
+      }
+    } else {
+      squaresHistoryCopy = [...squaresHistory];
+    }
+    squaresHistoryCopy.push(squaresCopy);
+    setSquaresHistory(squaresHistoryCopy);
+
+    setCurrentMove(currentMove + 1);
   }
 
   function restart() {
@@ -51,6 +70,25 @@ function Board() {
         {squares[i]}
       </button>
     );
+  }
+
+  function renderGoToButton(i, currentMove) {
+    let sentence = i === 0 ? "Go to game start" : `Go to move #${i}`;
+    let disabled = false;
+    if (i === currentMove) {
+      sentence += " (current)";
+      disabled = true;
+    }
+    return (
+      <button disabled={disabled} onClick={() => selectGoToButton(i)}>
+        {sentence}
+      </button>
+    );
+  }
+
+  function selectGoToButton(i) {
+    setSquares(squaresHistory[i]);
+    setCurrentMove(i);
   }
 
   return (
@@ -74,6 +112,13 @@ function Board() {
       <button className="restart" onClick={restart}>
         restart
       </button>
+      <div>
+        <ol>
+          {squaresHistory.map((square, index) => {
+            return <li>{renderGoToButton(index, currentMove)}</li>;
+          })}
+        </ol>
+      </div>
     </div>
   );
 }
