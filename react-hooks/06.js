@@ -1,7 +1,7 @@
 // useEffect: HTTP requests
 
 import * as React from "react";
-// you'll want the following additional things from '../pokemon':
+// API from ../pokemon
 // fetchPokemon: the function we call to get the pokemon info
 // PokemonInfoFallback: the thing we show while we're loading the pokemon info
 // PokemonDataView: the stuff we use to display the pokemon info
@@ -18,16 +18,17 @@ function PokemonInfo({ pokemonName }) {
   // use React.useEffect where the callback should be called whenever the
   // pokemon name changes.
   React.useEffect(() => {
-    // if the pokemonName is falsy (an empty string) then don't bother making the request (exit early)
+    // when the component mounts, pokemonName is falsy (an empty string) so we dont want to make a request
     if (!pokemonName) return;
+
+    // clear the pokemon state to render the loading screen when fetching a new pokemon
+    // if not we will see the previous pokemon as our loading screen
     setPokemon(null);
+    // using the fetchPokemon API to get pokemon data
     fetchPokemon(pokemonName).then((pokemonData) => {
       setPokemon(pokemonData);
-    }); // Use the `fetchPokemon` function to fetch a pokemon by its name
+    });
   }, [pokemonName]);
-  // 💰 DON'T FORGET THE DEPENDENCIES ARRAY!
-
-  // before calling `fetchPokemon`, clear the current pokemon state by setting it to null
 
   // return the following things based on the `pokemon` state and `pokemonName` prop:
   //   1. no pokemonName: 'Submit a pokemon'
