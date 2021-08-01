@@ -13,35 +13,45 @@ import {
 } from "../pokemon";
 
 function PokemonInfo({ pokemonName }) {
-  // Have state for the pokemon (null)
   const [pokemon, setPokemon] = React.useState(null);
-  // use React.useEffect where the callback should be called whenever the
-  // pokemon name changes.
+  const [error, setError] = React.useState(null);
+
+  // React.useEffect's callback is called whenever the pokemonName changes
   React.useEffect(() => {
     // when the component mounts, pokemonName is falsy (an empty string) so we dont want to make a request
     if (!pokemonName) return;
-
     // clear the pokemon state to render the loading screen when fetching a new pokemon
     // if not we will see the previous pokemon as our loading screen
     setPokemon(null);
     // using the fetchPokemon API to get pokemon data
-    fetchPokemon(pokemonName).then((pokemonData) => {
-      setPokemon(pokemonData);
-    });
+    fetchPokemon(pokemonName).then(
+      (pokemonData) => {
+        if (error) setError(false);
+        setPokemon(pokemonData);
+      },
+      (error) => setError(error)
+    );
   }, [pokemonName]);
 
-  // return the following things based on the `pokemon` state and `pokemonName` prop:
-  //   1. no pokemonName: 'Submit a pokemon'
-  //   2. pokemonName but no pokemon: <PokemonInfoFallback name={pokemonName} />
-  //   3. pokemon: <PokemonDataView pokemon={pokemon} />
-
-  return !pokemonName ? (
-    "Submit a pokemon"
-  ) : !pokemon ? (
-    <PokemonInfoFallback name={pokemonName} />
-  ) : (
-    <PokemonDataView pokemon={pokemon} />
-  );
+  // return respective UI based on
+  // 1. has error
+  // 2. no pokemonName: 'Submit a pokemon'
+  // 3. pokemonName but no pokemon: <PokemonInfoFallback name={pokemonName} />
+  // 4. pokemon: <PokemonDataView pokemon={pokemon} />
+  if (error) {
+    return (
+      <div role="alert">
+        There was an error:{" "}
+        <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
+      </div>
+    );
+  } else if (!pokemonName) {
+    return "Submit a pokemon";
+  } else if (!pokemon) {
+    return <PokemonInfoFallback name={pokemonName} />;
+  } else {
+    return <PokemonDataView pokemon={pokemon} />;
+  }
 }
 
 function App() {
