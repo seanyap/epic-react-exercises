@@ -13,9 +13,20 @@ import {
 } from "../pokemon";
 
 function PokemonInfo({ pokemonName }) {
-  const [status, setStatus] = React.useState("idle");
-  const [pokemon, setPokemon] = React.useState(null);
-  const [error, setError] = React.useState(null);
+  // const [status, setStatus] = React.useState('idle')
+  // const [pokemon, setPokemon] = React.useState(null)
+  // const [error, setError] = React.useState(null)
+
+  // put all states into an object that has properties for each state
+  const [state, setState] = React.useState({
+    status: "idle",
+    pokemon: null,
+    error: null,
+  });
+
+  // destructure our state object so we can use the variable without having to
+  // append state.status, state.pokemon etc
+  const { status, pokemon, error } = state;
 
   // React.useEffect's callback is called whenever the pokemonName changes
   React.useEffect(() => {
@@ -24,16 +35,21 @@ function PokemonInfo({ pokemonName }) {
     // clear the pokemon state to render the loading screen when fetching a new pokemon
     // if not we will see the previous pokemon as our loading screen
     // setPokemon(null)
-    setStatus("pending");
+
+    // REMEMBER each setState TRIGGERS a re-render
+
+    // keep in mind that this is setting the status object to only contain one
+    // key-value pair: status: 'pending', we lost the pokemon and error pairs
+    setState({ status: "pending" });
+
     // using the fetchPokemon API to get pokemon data
     fetchPokemon(pokemonName).then(
       (pokemonData) => {
-        setPokemon(pokemonData);
-        setStatus("resolved");
+        // {pokemon: pokemon} in es6 can be written {pokemon, ...}
+        setState({ pokemon, status: "resolved" });
       },
       (error) => {
-        setError(error);
-        setStatus("rejected");
+        setState({ error, status: "rejected" });
       }
     );
   }, [pokemonName]);
