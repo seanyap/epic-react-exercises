@@ -13,6 +13,7 @@ import {
 } from "../pokemon";
 
 function PokemonInfo({ pokemonName }) {
+  const [status, setStatus] = React.useState("idle");
   const [pokemon, setPokemon] = React.useState(null);
   const [error, setError] = React.useState(null);
 
@@ -22,36 +23,42 @@ function PokemonInfo({ pokemonName }) {
     if (!pokemonName) return;
     // clear the pokemon state to render the loading screen when fetching a new pokemon
     // if not we will see the previous pokemon as our loading screen
-    setPokemon(null);
+    // setPokemon(null)
+    setStatus("pending");
     // using the fetchPokemon API to get pokemon data
     fetchPokemon(pokemonName).then(
       (pokemonData) => {
-        if (error) setError(false);
         setPokemon(pokemonData);
+        setStatus("resolved");
       },
-      (error) => setError(error)
+      (error) => {
+        setError(error);
+        setStatus("rejected");
+      }
     );
   }, [pokemonName]);
 
-  // return respective UI based on
+  // return/render different UI based on status
   // 1. has error
   // 2. no pokemonName: 'Submit a pokemon'
   // 3. pokemonName but no pokemon: <PokemonInfoFallback name={pokemonName} />
   // 4. pokemon: <PokemonDataView pokemon={pokemon} />
-  if (error) {
+  if (status === "idle") {
+    return "Submit a pokemon";
+  } else if (status === "pending") {
+    return <PokemonInfoFallback name={pokemonName} />;
+  } else if (status === "resolved") {
+    return <PokemonDataView pokemon={pokemon} />;
+  } else if (status === "rejected") {
     return (
       <div role="alert">
         There was an error:{" "}
         <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
       </div>
     );
-  } else if (!pokemonName) {
-    return "Submit a pokemon";
-  } else if (!pokemon) {
-    return <PokemonInfoFallback name={pokemonName} />;
-  } else {
-    return <PokemonDataView pokemon={pokemon} />;
   }
+  // there can only be 4 options for our status
+  throw new Error("This should not be possible");
 }
 
 function App() {
