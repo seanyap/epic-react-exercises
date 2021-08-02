@@ -1,5 +1,6 @@
 // useEffect: HTTP requests
 
+import { thisExpression } from "@babel/types";
 import * as React from "react";
 // API from ../pokemon
 // fetchPokemon: the function we call to get the pokemon info
@@ -44,7 +45,7 @@ function PokemonInfo({ pokemonName }) {
 
     // using the fetchPokemon API to get pokemon data
     fetchPokemon(pokemonName).then(
-      (pokemonData) => {
+      (pokemon) => {
         // {pokemon: pokemon} in es6 can be written {pokemon, ...}
         setState({ pokemon, status: "resolved" });
       },
@@ -66,15 +67,39 @@ function PokemonInfo({ pokemonName }) {
   } else if (status === "resolved") {
     return <PokemonDataView pokemon={pokemon} />;
   } else if (status === "rejected") {
-    return (
-      <div role="alert">
-        There was an error:{" "}
-        <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
-      </div>
-    );
+    // this will be handled by our error boundary
+    throw error;
   }
   // there can only be 4 options for our status
   throw new Error("This should not be possible");
+}
+
+// everyone who's using this ErrorBoundary will have the flexiblity to provide any
+// fallback component to render, making this component much more generic and useful
+class ErrorBoundary extends React.Component {
+  state = { error: null };
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI
+    return { error };
+  }
+  render() {
+    const { error } = this.state;
+    if (error) {
+      return <this.props.FallbackComponent error={error} />;
+    }
+    return this.props.children;
+  }
+}
+
+// this function will return the fallback UI we want ErrorBoundary to display
+function ErrorFallback({ error }) {
+  return (
+    <div role="alert">
+      There was an error:{" "}
+      <pre style={{ whiteSpace: "normal" }}>{error.message}</pre>
+    </div>
+  );
 }
 
 function App() {
@@ -89,7 +114,9 @@ function App() {
       <PokemonForm pokemonName={pokemonName} onSubmit={handleSubmit} />
       <hr />
       <div className="pokemon-info">
-        <PokemonInfo pokemonName={pokemonName} />
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <PokemonInfo pokemonName={pokemonName} />
+        </ErrorBoundary>
       </div>
     </div>
   );
