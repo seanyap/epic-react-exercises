@@ -1,0 +1,25 @@
+{
+  "name": "epic-react-exercises",
+  "version": "1.0.0",
+  "description": "Practice for React concepts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-error-boundary": "^3.1.3",
+    "vanilla-tilt": "^1.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanyap/epic-react-exercises.git"
+  },
+  "author": "Sean Yap",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seanyap/epic-react-exercises/issues"
+  },
+  "homepage": "https://github.com/seanyap/epic-react-exercises#readme"
+}
